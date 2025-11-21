@@ -5,7 +5,6 @@
 
     include "../conecta.php";
 
-    // Recebe os dados em JSON
     $dados = json_decode(file_get_contents("php://input"), true);
 
     $nome = $dados["nome"];
@@ -13,7 +12,11 @@
     $senha = $dados["senha"];
     $tipo = $dados["tipo_usuario"];
 
-    $sql = $con->prepare("INSERT INTO usuarios (nome, email, senha, tipo_usuario) VALUES (?, ?, ?, ?)");
+    $sql = $con->prepare("
+        INSERT INTO usuarios (nome, email, senha, tipo_usuario, data_cadastro)
+        VALUES (?, ?, ?, ?, NOW())
+    ");
+
     $sql->bind_param("ssss", $nome, $email, $senha, $tipo);
 
     if ($sql->execute()) {
