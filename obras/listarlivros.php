@@ -13,4 +13,3 @@ while ($linha = $resultado->fetch_assoc()) {
 }
 
 echo json_encode($dados);
-?>
