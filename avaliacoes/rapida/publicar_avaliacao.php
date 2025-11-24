@@ -11,13 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 include "../../conecta.php";
 
-// Captura o JSON enviado
 $input = file_get_contents("php://input");
-file_put_contents("debug.txt", $input); // DEBUG
-
+file_put_contents("debug.txt", $input); 
 $dados = json_decode($input, true);
 
-// Validação
 $nota = $dados["nota"] ?? null;
 $opiniao = $dados["opiniao"] ?? null;
 $comentario = $dados["comentario"] ?? null;
@@ -33,7 +30,6 @@ if ($nota === null || $opiniao === null || $id_obras === null || $id_usuario ===
     exit;
 }
 
-// Verifica duplicidade
 $check = $con->prepare("SELECT 1 FROM avaliacao_rapida WHERE id_usuario = ? AND id_obras = ?");
 $check->bind_param("ii", $id_usuario, $id_obras);
 $check->execute();
@@ -49,7 +45,6 @@ if ($check->num_rows > 0) {
 
 $check->close();
 
-// Inserção
 $sql = $con->prepare("
     INSERT INTO avaliacao_rapida 
     (nota, opiniao, comentario, id_usuario, id_obras, data_avaliacao_rap)

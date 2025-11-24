@@ -1,1 +1,1 @@
-{"nota":5,"opiniao":"Sim","comentario":"Mereceu todos os oscars","id_obras":"5","id_usuarios":6}
+{"nota":3,"opiniao":"Sim","comentario":"Perdeu muito a qualidade.","id_obras":"2","id_usuarios":6}

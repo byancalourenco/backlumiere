@@ -14,10 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $genero = $_POST["genero"];
     $classificacao = $_POST["classificacao"];
 
-    // Imagem
     $novoNome = null;
 
-    // === Upload da imagem (SE HOUVER) ===
     if (isset($_FILES["capa"]) && !empty($_FILES["capa"]["name"])) {
 
         $ext = pathinfo($_FILES["capa"]["name"], PATHINFO_EXTENSION);
