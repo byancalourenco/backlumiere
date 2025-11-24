@@ -17,13 +17,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Imagem
     $novoNome = null;
 
-    if (!empty($_FILES["capa"]["name"])) {
-        $ext = pathinfo($_FILES["capa"]["name"], PATHINFO_EXTENSION);
-        $novoNome = uniqid()."_obra.".$ext;
-        move_uploaded_file($_FILES["capa"]["tmp_name"], "uploads/".$novoNome);
+    // === Upload da imagem (SE HOUVER) ===
+    if (isset($_FILES["capa"]) && !empty($_FILES["capa"]["name"])) {
 
-        $sql = "UPDATE obras SET capa='$novoNome' WHERE id_obras=$id";
-        $con->query($sql);
+        $ext = pathinfo($_FILES["capa"]["name"], PATHINFO_EXTENSION);
+
+        $novoNome = uniqid() . "_obra." . $ext;
+
+        $destino = "../uploads/" . $novoNome;
+
+        if (!move_uploaded_file($_FILES["capa"]["tmp_name"], $destino)) {
+            echo json_encode(["erro" => true, "mensagem" => "Erro ao enviar imagem"]);
+            exit;
+        }
+
+        // Atualizar capa
+        $stmtCapa = $con->prepare("UPDATE obras SET capa=? WHERE id_obras=?");
+        $stmtCapa->bind_param("si", $novoNome, $id);
+        $stmtCapa->execute();
     }
 
     $sql = "UPDATE obras SET 
@@ -33,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 ano_lancamento='$ano',
                 autor='$autor',
                 editora='$editora'
+
             WHERE id_obras=$id";
 
     if ($con->query($sql)) {

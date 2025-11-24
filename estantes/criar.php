@@ -10,15 +10,16 @@ $dados = json_decode(file_get_contents("php://input"), true);
 
 $nome = $dados["nome"] ?? null;
 $descricao = $dados["descricao"] ?? null;
+$id_usuario = $dados["id_usuario"] ?? null;
 
-if (!$nome) {
-    echo json_encode(["sucesso" => false, "erro" => "Nome da estante é obrigatório"]);
+if (!$nome || !$id_usuario) {
+    echo json_encode(["sucesso" => false, "erro" => "Nome e id_usuario são obrigatórios"]);
     exit;
 }
 
-$sql = "INSERT INTO estantes (nome_estante, descricao) VALUES (?, ?)";
+$sql = "INSERT INTO estantes (nome_estante, descricao, id_usuario) VALUES (?, ?, ?)";
 $stmt = $con->prepare($sql);
-$stmt->bind_param("ss", $nome, $descricao);
+$stmt->bind_param("ssi", $nome, $descricao, $id_usuario);
 
 if ($stmt->execute()) {
     echo json_encode([
