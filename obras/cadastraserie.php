@@ -48,7 +48,7 @@ if (!move_uploaded_file($arquivo['tmp_name'], $caminhoFinal)) {
     exit;
 }
 
-// Inserir na tabela obras
+// inserir na tabela obras
 $stmt = $con->prepare("
     INSERT INTO obras 
     (titulo, tipo, descricao, ano_lancamento, autor, editora, capa, data_cadastro, id_usuario) 
@@ -73,7 +73,6 @@ if (!$stmt->execute()) {
 
 $id_obra = $stmt->insert_id;
 
-// Se for série, inserir na tabela temporadas
 if ($tipo === "Série") {
     $stmt2 = $con->prepare("INSERT INTO temporadas (numero_temp, numero_eps, id_obras) VALUES (?, ?, ?)");
     $stmt2->bind_param("iii", $num_temporadas, $num_episodios, $id_obra);

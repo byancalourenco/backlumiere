@@ -1,5 +1,5 @@
 <?php
-    // Se usar session_start() no futuro.
+    // se usar session_start() dps.
     session_start();
     session_unset();
     session_destroy();
